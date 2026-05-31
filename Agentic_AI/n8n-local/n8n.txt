@@ -1,20 +1,36 @@
 1) download and install nodejs
         website : https://nodejs.org/en/download
-        > node --version
+        > node --version (after installing ndee js pleach check the version
         > npm --version
 
         Note : version > 20.x.x
 
 2) install "n8n" with the help of "npm"
         Note : change from powershell to command prompt
+        here g used for global
         > npm install -g n8n (5min)
         > n8n --version
 
-3) start n8n
+3) Generate chat gpt key ( this key is used to connect to chat gpt)
+   website : - https://platform.openai.com/api-keys
+   n8n-local -  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
+   This key is used to connect to chatgpt
+   take 1 month claude subscription
+   chatgpt efficiency is 30%
+   Atrophic efficiency is 95%
+
+4) enable "gmail api" and "google sheets"
+      http://localhost:5678/rest/oauth2-credential/callback
+	  https://console.cloud.google.com/
+	  copy the client id and secret id from cloud google console
+	  client id - 694057170060-mkbau75i7tqtdgsddb6s0g7lodd43jsh.apps.googleusercontent.com
+	  secret id- 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
+
+5) start n8n
         > n8n start
 
-4) start n8n by using 
-        http://localhost:5678
+6) we will get http://localhost:5678 url
+    register it - pw - Ashritbeena@1983
 
 
 5) download usecases from github
