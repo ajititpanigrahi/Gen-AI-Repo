@@ -1,0 +1,32 @@
+1) download and install nodejs
+        website : https://nodejs.org/en/download
+        > node --version
+        > npm --version
+
+        Note : version > 20.x.x
+
+2) install "n8n" with the help of "npm"
+        Note : change from powershell to command prompt
+        > npm install -g n8n (5min)
+        > n8n --version
+
+3) start n8n
+        > n8n start
+
+4) start n8n by using 
+        http://localhost:5678
+
+
+5) download usecases from github
+        5 usecases
+
+6) create api key (OpenAPI Key)
+        https://platform.openai.com/api-keys
+        copy key and save into notepad
+
+7) execute usecase1
+        workflow-01-hello-world.json
+
+        http://localhost:5678/webhook-test/hello
+
+
