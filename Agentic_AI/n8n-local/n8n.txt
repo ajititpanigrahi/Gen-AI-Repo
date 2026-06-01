@@ -28,7 +28,7 @@
         > n8n start
 
 6) we will get http://localhost:5678 url
-    register it - pw - Ashritbeena@1983
+    register it -
 
 
 5) download usecases from github
