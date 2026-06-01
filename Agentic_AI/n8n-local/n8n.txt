@@ -13,7 +13,7 @@
 
 3) Generate chat gpt key ( this key is used to connect to chat gpt)
    website : - https://platform.openai.com/api-keys
-   n8n-local -  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
+   n8n-local -
    This key is used to connect to chatgpt
    take 1 month claude subscription
    chatgpt efficiency is 30%
@@ -23,8 +23,8 @@
       http://localhost:5678/rest/oauth2-credential/callback
 	  https://console.cloud.google.com/
 	  copy the client id and secret id from cloud google console
-	  client id - 694057170060-mkbau75i7tqtdgsddb6s0g7lodd43jsh.apps.googleusercontent.com
-	  secret id- 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
+	  client id -
+	  secret id-
 
 5) start n8n
         > n8n start
