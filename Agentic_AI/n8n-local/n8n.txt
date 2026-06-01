@@ -23,8 +23,6 @@
       http://localhost:5678/rest/oauth2-credential/callback
 	  https://console.cloud.google.com/
 	  copy the client id and secret id from cloud google console
-	  client id -
-	  secret id-
 
 5) start n8n
         > n8n start
