@@ -12,5 +12,5 @@ pip3 install -U langchain-text-splitters
 pip3 install -U langchain-openai
 pip3 install -U faiss-cpu
 
-set OPENAI_API_KEY=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
+set OPENAI_API_KEY=***
 
