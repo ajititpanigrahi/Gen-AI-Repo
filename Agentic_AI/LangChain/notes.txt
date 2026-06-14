@@ -12,5 +12,5 @@ pip3 install -U langchain-text-splitters
 pip3 install -U langchain-openai
 pip3 install -U faiss-cpu
 
-set OPENAI_API_KEY=***
+
 
