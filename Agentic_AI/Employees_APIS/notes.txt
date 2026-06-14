@@ -1,9 +1,29 @@
+FastAPI is a modern Python web framework used to build APIs quickly and efficiently.
+It is known for high performance, automatic documentation generation
+
+BaseModel from Pydantic is used to define, validate, and serialize data structures in Python.
+It is especially important in FastAPI because it validates incoming request data automatically.
+
+List from Python's typing module is used for type hints to specify that a variable, function parameter,
+or return value should be a list containing elements of a specific type.
+
+AsyncIOMotorClient is the asynchronous MongoDB client provided by the Motor library. It allows Python applications
+ (especially FastAPI and other async frameworks) to interact with MongoDB without blocking the event loop.
+
+Why Use AsyncIOMotorClient?
+Supports async/await
+Improves performance for I/O-heavy applications
+Handles multiple database requests concurrently
+Integrates well with FastAPI
+
+
+
 API
 ***
     Ex. GET,POST,PUT,DELETE.HEAD,PATCH,TRACE,OPTIONS,....
 
-> python -m venv venv314
+> python -m venv venv
 
-> source venv314\bin\activate (mac)  venv314\Scripts\activate
+> source venv\bin\activate (mac)  venv\Scripts\activate (windows)
 
 > pip install -r requirements.txt
