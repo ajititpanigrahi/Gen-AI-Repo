@@ -1,0 +1,50 @@
+{
+  "intents": [
+    {
+      "name": "greeting",
+      "patterns": ["hi", "hello", "hey", "good morning", "good evening", "hey there"],
+      "responses": ["Hello! How can I help you today?", "Hi there!", "Hey! What's on your mind?"]
+    },
+    {
+      "name": "goodbye",
+      "patterns": ["bye", "goodbye", "see you", "see you later", "good night"],
+      "responses": ["Goodbye! Type /quit to exit.", "See you later! (/quit to exit)"]
+    },
+    {
+      "name": "name",
+      "patterns": ["what is your name", "who are you", "your name"],
+      "responses": ["I'm {name}, a chatbot built with the MVC pattern in Python."]
+    },
+    {
+      "name": "how_are_you",
+      "patterns": ["how are you", "how are you doing", "how is it going"],
+      "responses": ["I'm running smoothly, thanks for asking!", "All systems go. How about you?"]
+    },
+    {
+      "name": "thanks",
+      "patterns": ["thanks", "thank you", "thank you so much"],
+      "responses": ["You're welcome!", "Happy to help!", "Anytime!"]
+    },
+    {
+      "name": "time",
+      "patterns": ["what time is it", "current time", "what is the date", "today's date"],
+      "responses": ["(computed at runtime)"]
+    },
+    {
+      "name": "mvc",
+      "patterns": ["what is mvc", "explain mvc", "model view controller"],
+      "responses": [
+        "MVC splits an app into three parts: the Model holds data and logic, the View shows things to the user, and the Controller takes input, asks the Model, and tells the View what to show."
+      ]
+    },
+    {
+      "name": "joke",
+      "patterns": ["tell me a joke", "joke", "make me laugh"],
+      "responses": [
+        "Why do programmers prefer dark mode? Because light attracts bugs.",
+        "There are 10 kinds of people: those who understand binary and those who don't.",
+        "I would tell you a UDP joke, but you might not get it."
+      ]
+    }
+  ]
+}

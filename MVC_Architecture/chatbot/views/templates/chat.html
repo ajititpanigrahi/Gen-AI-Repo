@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ bot_name }} Chat</title>
+  <style>
+    :root {
+      --bg: #f4f5f7; --panel: #ffffff; --text: #1d2330; --muted: #6b7280;
+      --border: #e3e5ea; --user: #2f6fed; --user-text: #ffffff;
+      --bot: #eef0f4; --info: #6b7280; --error: #c2352b; --accent: #2f6fed;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #12151b; --panel: #1a1e26; --text: #e6e8ec; --muted: #9aa1ad;
+        --border: #2a303b; --user: #3b7bff; --user-text: #ffffff;
+        --bot: #252a34; --info: #9aa1ad; --error: #ff6b5e; --accent: #5a8dff;
+      }
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      background: var(--bg); color: var(--text);
+      font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      display: flex; justify-content: center;
+    }
+    .app {
+      width: 100%; max-width: 760px; height: 100%;
+      display: flex; flex-direction: column; background: var(--panel);
+      border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+    }
+    header {
+      padding: 14px 16px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: baseline; gap: 10px;
+    }
+    header h1 { font-size: 17px; margin: 0; }
+    header span { color: var(--muted); font-size: 13px; }
+    #log { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .msg { max-width: 80%; padding: 8px 12px; border-radius: 14px; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .msg.user { align-self: flex-end; background: var(--user); color: var(--user-text); border-bottom-right-radius: 4px; }
+    .msg.bot { align-self: flex-start; background: var(--bot); border-bottom-left-radius: 4px; }
+    .note { align-self: center; color: var(--info); font-size: 13px; text-align: center; }
+    .note.error { color: var(--error); }
+    .block {
+      align-self: stretch; background: var(--bot); border-radius: 10px; padding: 10px 12px;
+      font: 13px/1.5 ui-monospace, Consolas, monospace; white-space: pre-wrap; overflow-wrap: anywhere;
+    }
+    .block strong { display: block; font-family: system-ui, sans-serif; margin-bottom: 4px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 16px 10px; }
+    .chips button {
+      border: 1px solid var(--border); background: transparent; color: var(--text);
+      border-radius: 999px; padding: 4px 10px; font-size: 13px; cursor: pointer;
+    }
+    .chips button:hover { border-color: var(--accent); color: var(--accent); }
+    form { display: flex; gap: 8px; padding: 12px 16px 16px; border-top: 1px solid var(--border); }
+    input {
+      flex: 1; min-width: 0; padding: 10px 12px; border-radius: 10px;
+      border: 1px solid var(--border); background: var(--bg); color: var(--text); font: inherit;
+    }
+    input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+    button[type=submit] {
+      padding: 10px 16px; border: 0; border-radius: 10px; background: var(--accent);
+      color: #fff; font: inherit; font-weight: 600; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header><h1>{{ bot_name }}</h1><span>MVC chatbot, web view</span></header>
+    <div id="log" aria-live="polite"></div>
+    <div class="chips">
+      <button type="button" data-text="hello">hello</button>
+      <button type="button" data-text="tell me a joke">tell me a joke</button>
+      <button type="button" data-text="what time is it">what time is it</button>
+      <button type="button" data-text="12 * (3 + 4)">12 * (3 + 4)</button>
+      <button type="button" data-text="/help">/help</button>
+    </div>
+    <form id="form" autocomplete="off">
+      <input id="input" maxlength="1000" placeholder="Type a message or /help" aria-label="Message" autofocus>
+      <button type="submit">Send</button>
+    </form>
+  </main>
+
+  <script>
+    const BOT = {{ bot_name | tojson }};
+    const log = document.getElementById("log");
+    const form = document.getElementById("form");
+    const input = document.getElementById("input");
+
+    function add(className, text) {
+      const el = document.createElement("div");
+      el.className = className;
+      el.textContent = text;           // textContent: never interpret bot/user text as HTML
+      log.appendChild(el);
+      log.scrollTop = log.scrollHeight;
+      return el;
+    }
+
+    function addList(title, items) {
+      const el = add("block", "");
+      const strong = document.createElement("strong");
+      strong.textContent = title;
+      el.appendChild(strong);
+      el.appendChild(document.createTextNode(items.join("\n")));
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function render(event) {
+      switch (event.kind) {
+        case "bot":   add("msg bot", event.text); break;
+        case "error": add("note error", event.text); break;
+        case "help":  addList("Help", [event.text]); break;
+        case "list":  addList(event.title, event.items); break;
+        default:      add("note", event.text);
+      }
+    }
+
+    // Messages are queued so they reach the server in order, and typing never blocks.
+    let queue = Promise.resolve();
+    function send(text) {
+      text = text.trim();
+      if (!text) return;
+      if (!text.startsWith("/")) add("msg user", text);
+      else add("note", "> " + text);
+      queue = queue.then(() => post(text));
+    }
+
+    async function post(text) {
+      try {
+        const res = await fetch("/api/message", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text }),
+        });
+        const data = await res.json();
+        if (!res.ok) { add("note error", data.error || "Request failed."); return; }
+        data.events.forEach(render);
+      } catch (err) {
+        add("note error", "Could not reach the server.");
+      }
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const text = input.value;
+      input.value = "";
+      send(text);
+    });
+
+    document.querySelectorAll(".chips button").forEach((b) =>
+      b.addEventListener("click", () => { send(b.dataset.text); input.focus(); }));
+
+    // Restore this session's conversation after a page reload.
+    fetch("/api/history").then((r) => r.json()).then((data) => {
+      if (!data.messages.length) {
+        add("note", `Hi, I'm ${BOT}. Type /help for commands.`);
+        return;
+      }
+      data.messages.forEach((m) => add(m.sender === "user" ? "msg user" : "msg bot", m.text));
+    }).catch(() => add("note error", "Could not load history."));
+  </script>
+</body>
+</html>

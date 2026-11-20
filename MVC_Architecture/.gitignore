@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.venv/
+storage/
+
+# The repo-wide .gitignore ignores every data/ folder; this project's intents live in one.
+!chatbot/data/
